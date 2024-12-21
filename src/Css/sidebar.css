@@ -1,0 +1,147 @@
+
+.logo{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.icon_sidebar{
+    height: 20px;
+    width: 20px;
+}
+.slider_img_sidebar{
+  width: 35px;
+  height: 40px;
+}
+  
+  /* Sidebar Styles */
+  
+  #sidebar {
+    z-index: 1000;
+    position: fixed;
+    width: 80px;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #833988;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+      scrollbar-width: none;  /* Firefox */
+
+  }
+  
+  #sidebar header {
+    font-size: 20px;
+    line-height: 52px;
+    text-align: center;
+  }
+  
+  #sidebar header a {
+    color: #fff;
+    /* display: block; */
+  }
+  
+ 
+  .nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .nav li {
+    margin-bottom: 40px; 
+  }
+
+  #sidebar .nav a{
+   transition: 0.3s ease-in-out;
+  }
+  
+  #sidebar .nav a:hover{
+    border-radius: 5px;
+    background: #F57D20;
+    padding: 10px;
+    color: #ECEFF1;
+  }
+  /* NavBar ****************************/
+  .img_icon_navbar{
+    /* height: 5%; */
+    width: 30px;
+    object-fit: contain;
+  }
+
+  .list_profile_icon_navbar{
+    font-size: 15px;
+    font-weight: 600;
+   /* padding-top: 2vh; */
+  }
+  .icon_profile_navbar{
+    display: flex;
+  }
+  .title_page_navbar{
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 56px;
+    color: #833988;
+  }
+  .notification-wrapper {
+    position: relative;
+  }
+  
+  .notification-dropdown {
+    position: absolute;
+    top: 100%;
+    /* right: 0; */
+    left: 1px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 300px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+  .notif_list{
+    list-style-type:none;
+  }
+  .notification-dropdown {
+    padding: 0;
+    margin: 0;
+    background-color: #f0f2f5;
+  }
+  
+  .notif_cont {
+    background-color: #833988;
+    padding: 3px;
+    margin: 5px;
+    color: #fff;
+    border-radius: 25px;
+    font-size: 11px;
+    width: 100%;
+    /* display: flex; */
+  }
+  
+
+   @media screen and (max-width:768px) {
+    #sidebar {
+        width: 70px;
+        
+    }
+    .notification-dropdown{
+      width: 260px; 
+      left: -120px;
+
+    }
+    .notif_cont{
+      font-size: 9px;
+    }
+    
+   }
+   /* @media screen and (max-width:1024px) {
+    .notification-dropdown{
+      width: 260px; 
+
+    }
+    .notif_cont{
+      font-size: 10px;
+    }
+   } */

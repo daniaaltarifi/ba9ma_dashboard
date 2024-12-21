@@ -1,0 +1,140 @@
+.col_depa{
+    background-color: #833988;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 20px;
+}
+.icon_department{
+    height: 30px;
+    width:30px;
+    background-color: #F57D20;
+    border-radius: 20px;
+    padding: 4px;
+    object-fit: contain;
+}
+.info_cont_depa{
+    display: flex;
+    /* justify-content: space-evenly; */
+    flex-wrap: wrap;
+    align-items: center;
+}
+.coupoun_department{
+    color: #fff;
+margin-right: 1vh;
+}
+.info_department{
+    color: #fff;
+font-size: 13px;
+padding-left: 5px;
+}
+.title_depa{
+    font-size: 25px;
+    color: #fff;
+    /* font-weight: 500; */
+}
+.btn_handle_cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn_handle_depa{
+    background-color: #F57D20;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 20px 15px 20px;
+    margin: 5px;
+}
+.img_handle_depa{
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+}
+.add_btn{
+    /* height: 6vh; */
+    background-color: #833988;
+    border: none;
+    border-radius: 20px;
+    margin-right: 5vh;
+    padding-bottom:10px;
+}
+.plus_icon{
+margin-left: 5px;
+    padding: 0 8px 5px 8px;
+    color: #000;
+    border-radius: 50px;
+    background-color: #fff;
+}
+.add_btn:hover{
+    background-color: #F57D20;
+}
+/* Modal************ */
+/* Modal *************************/
+.modal_title{
+    text-align: center;
+    color: #833988;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 100px;
+  }
+  .input_filed_modal{
+    border-radius: 20px;
+  border-color: #aaa
+  }
+  .text_field{
+    text-align: center;
+    color: #833988;
+  }
+  .buy_department_btn{
+    background-color: #833988;
+    border: none;
+    border-radius: 20px;
+    width: 100%;
+  }
+  .buy_department_btn:hover{
+    background-color: #F57D20;
+  }
+  .select_dep {
+    border-radius: 30px;
+    max-width: 100%;
+    width: 100%;
+    padding: 5px;
+    border-color: #aaa;
+  }
+  .select_dep option {
+    color: #833988;
+  }
+  .modal-backdrop {
+    background-color: rgba(103, 102, 102, 0.4);
+  }
+  
+  /* .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+  }
+  
+  .modal-content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .modal-content ul li {
+    margin: 5px 0;
+  }
+   */

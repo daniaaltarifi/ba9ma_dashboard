@@ -1,0 +1,51 @@
+/*  */
+/* Container styling */
+.container_tag {
+    width: 100%;
+    max-width: 600px; /* Adjust as needed */
+    margin: auto;
+  }
+  
+
+  /* Input wrapper styling */
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #f1efef; /* Add border to create a unified look */
+    border-radius: 14px; /* Rounded corners */
+    overflow: hidden; /* Ensures the button fits within the border */
+
+  }
+  
+  /* Input field styling */
+  .input_addtag {
+    flex: 1; /* Takes up remaining space */
+    padding: 10px; /* Adjust padding */
+    font-size: 1em; /* Adjust font size */
+
+  }
+  
+  /* Button styling */
+  .btn_add_tag {
+    background-color: #F57D20; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 10px 15px; /* Adjust padding */
+    font-size: 1em; /* Adjust font size */
+    cursor: pointer; /* Change cursor to pointer */
+    border-radius: 0; /* No rounding on edges */
+  }
+  
+  .btn_add_tag:hover {
+    background-color: #833988; /* Darker shade on hover */
+  }
+  .tag_data{
+    background-color: #f1efef;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  @media screen and (max-width: 768px) {
+    .input-wrapper {
+    display: grid;
+    }
+  }

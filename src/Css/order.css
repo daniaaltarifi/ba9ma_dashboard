@@ -1,0 +1,36 @@
+.courses_dep{
+    background-color: #F57D20;
+    border: none;
+    border-radius: 15px;
+    margin: 2vh;
+    color: #fff;
+    font-size: 20px;
+}
+/* Add this to your CSS file */
+.active-button {
+    background-color: #F57D20;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+.background_btn{
+    background-color: #833988;
+}
+/* @media screen and (max-width: 768px) {
+    .background_btn{
+        width: 150px;
+    }
+   
+} */
+@media screen and (max-width:958px) {
+    .cont_btn_order{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+    }
+     .courses_dep{
+        width: 100%;
+text-align: center;
+     }
+}
