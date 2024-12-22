@@ -78,7 +78,7 @@ fetchAvailableCards()
 
       handleCloseModal(); // Close the modal after deletion
     } catch (error) {
-      console.error("Error deleting department:", error);
+      console.error("Error deleting availablecards:", error);
     }
   };
 

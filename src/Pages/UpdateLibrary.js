@@ -1,31 +1,25 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../component/NavBar";
 import "../Css/addCourse.css";
-import { useLocation,useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css"; 
+import "toastify-js/src/toastify.css";
 import axios from "axios";
-
-
-
+import { API_URL } from "../App";
 
 function UpdateLibrary() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [book_name, setBook_name] = useState('');
-  const [author, setAuthor] = useState("")
-const [department_id, setDepartment_id] = useState(null)
-const [page_num, setPage_num] = useState("")
-  const [libraryId, setLibraryId] = useState('');
-  const [teacherName, setTeacherName] = useState('');
+  const [book_name, setBook_name] = useState("");
+  const [author, setAuthor] = useState("");
+  const [department_id, setDepartment_id] = useState(null);
+  const [page_num, setPage_num] = useState("");
+  const [libraryId, setLibraryId] = useState("");
+  const [teacherName, setTeacherName] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [displayInfo, setDisplayInfo] = useState([]);
-  const [library, setLibrary] = useState([])
-  const [departmentData, setDepartmentData] = useState([])
-
-
-
-
+  const [library, setLibrary] = useState([]);
+  const [departmentData, setDepartmentData] = useState([]);
 
   const handleDepartment = (e) => {
     const selectedDepartmentId = e.target.value;
@@ -37,13 +31,16 @@ const [page_num, setPage_num] = useState("")
     if (location.state && location.state.id) {
       setLibraryId(location.state.id);
     } else {
-      console.warn('No ID found in location.state');
+      console.warn("No ID found in location.state");
     }
   }, [location.state]);
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/department");
+        const response = await axios.get(
+          `${API_URL}/departments/getDepartments`
+        );
+
         setDepartmentData(response.data);
       } catch (error) {
         console.error("Error fetching departments:", error);
@@ -53,15 +50,16 @@ const [page_num, setPage_num] = useState("")
     fetchDepartments();
   }, []);
 
-
   // Fetch library details when the component mounts
   useEffect(() => {
     if (location.state && location.state.id) {
       setLibraryId(location.state.id);
-      
+
       const fetchLibrary = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/library/getlibrarybyid/${location.state.id}`);
+          const response = await axios.get(
+            `${API_URL}/Libraries/getLibrary/${location.state.id}`
+          );
           const library = response.data;
           setBook_name(library.book_name);
           setAuthor(library.author);
@@ -69,42 +67,36 @@ const [page_num, setPage_num] = useState("")
           setPage_num(library.page_num);
           // Handle the current file URL if needed (not shown in this code)
         } catch (error) {
-          console.error('Error fetching library data:', error);
+          console.error("Error fetching library data:", error);
         }
       };
 
       fetchLibrary();
     } else {
-      console.warn('No ID found in location.state');
+      console.warn("No ID found in location.state");
     }
   }, [location.state]);
 
-
-
-  
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
-  
 
-  const handleDeleteSelectedFile=()=>{
+  const handleDeleteSelectedFile = () => {
     setSelectedFile(null);
-  }
-
-
+  };
 
   const handleUpdate = async () => {
     try {
       const formData = new FormData();
-      formData.append('book_name', book_name);
-      formData.append('author', author);
-      formData.append('department_id', department_id);
-      formData.append('page_num', page_num); // Append the selected image file
-      formData.append('file_book', selectedFile); // Append the selected image file
+      formData.append("book_name", book_name);
+      formData.append("author", author);
+      formData.append("department_id", department_id);
+      formData.append("page_num", page_num); // Append the selected image file
+      formData.append("file_book", selectedFile); // Append the selected image file
 
       const response = await axios.put(
-        `http://localhost:8080/library/update/${libraryId}`,
+        `${API_URL}/Libraries/updateLibrary/${libraryId}`,
         formData, // Send the FormData object
         {
           headers: {
@@ -113,25 +105,23 @@ const [page_num, setPage_num] = useState("")
         }
       );
       setLibrary((prevAdd) =>
-        prevAdd.map((data) =>
-          data.id === libraryId ? response.data : data
-        )
+        prevAdd.map((data) => (data.id === libraryId ? response.data : data))
       );
       Toastify({
         text: "Updated completely",
         duration: 3000, // Duration in milliseconds
         gravity: "top", // 'top' or 'bottom'
-        position: 'right', // 'left', 'center', 'right'
+        position: "right", // 'left', 'center', 'right'
         backgroundColor: "#5EC693",
       }).showToast();
-navigate('/library')
+      navigate("/library");
     } catch (error) {
       console.log(`Error in fetch edit data: ${error}`);
     }
   };
   return (
     <>
-      <NavBar title={'مكتبة بصمة'} />
+      <NavBar title={"مكتبة بصمة"} />
       <div className="container">
         <div className="row">
           <div className="col-lg-2 col-md-6 col-sm-12">
@@ -209,13 +199,16 @@ navigate('/library')
                 <i
                   className="fa-solid fa-square-xmark fa-lg mt-2"
                   onClick={handleDeleteSelectedFile}
-                  style={{ color: '#944b43' }}
+                  style={{ color: "#944b43" }}
                 ></i>
               </div>
             )}
           </div>
           <div className="d-flex justify-content-center align-items-center">
-            <button className="btn_addCourse px-5 py-2 mt-5" onClick={handleUpdate}>
+            <button
+              className="btn_addCourse px-5 py-2 mt-5"
+              onClick={handleUpdate}
+            >
               حفظ
             </button>
           </div>

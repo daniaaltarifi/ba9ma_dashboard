@@ -1,31 +1,32 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../component/NavBar";
 import "../Css/addCourse.css";
 import axios from "axios";
 import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css"; 
+import "toastify-js/src/toastify.css";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../App";
 function AddTeacher() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [displayInfo, setDisplayInfo] = useState([]);
-  const [department_id, setDepartment_id] = useState("")
-  const [departmentData, setDepartmentData] = useState([])
-  const [teachers, setTeachers] = useState([])
-const [teacher_name, setTeacher_name] = useState("")
-const [descr, setDescr] = useState("")
-const [email, setEmail] = useState("")
-const navigate = useNavigate()
+  const [department_id, setDepartment_id] = useState("");
+  const [departmentData, setDepartmentData] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [teacher_name, setTeacher_name] = useState("");
+  const [descr, setDescr] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
 
-  const handleDeleteSelectedFile=()=>{
+  const handleDeleteSelectedFile = () => {
     setSelectedFile(null);
-  }
-    const handleDeleteCourse = (id) => {
+  };
+  const handleDeleteCourse = (id) => {
     // Delete the selected course by its ID
-    const updatedDisplayInfo = displayInfo.filter(course => course.id !== id);
+    const updatedDisplayInfo = displayInfo.filter((course) => course.id !== id);
     setDisplayInfo(updatedDisplayInfo);
   };
   const handleDepartment = (e) => {
@@ -35,7 +36,9 @@ const navigate = useNavigate()
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/department");
+        const response = await axios.get(
+          `${API_URL}/departments/getDepartments`
+        );
         setDepartmentData(response.data);
       } catch (error) {
         console.error("Error fetching departments:", error);
@@ -45,26 +48,25 @@ const navigate = useNavigate()
     fetchDepartments();
   }, []);
   const handlePost = async () => {
-
     if (!teacher_name || !descr || !department_id || !email || !selectedFile) {
       Toastify({
         text: "Please Fill All Field",
         duration: 3000, // Duration in milliseconds
         gravity: "top", // 'top' or 'bottom'
-        position: 'right', // 'left', 'center', 'right'
+        position: "right", // 'left', 'center', 'right'
         backgroundColor: "#CA1616",
       }).showToast();
       return;
     }
     try {
       const formData = new FormData();
-      formData.append('teacher_name', teacher_name);
-      formData.append('descr', descr);
-      formData.append('department_id', department_id);
-      formData.append('email', email);
-      formData.append('img', selectedFile);
+      formData.append("teacher_name", teacher_name);
+      formData.append("descr", descr);
+      formData.append("department_id", department_id);
+      formData.append("email", email);
+      formData.append("img", selectedFile);
       const response = await axios.post(
-        "http://localhost:8080/teacher/add",
+        `${API_URL}/TeacherRoutes/add`,
         formData,
         {
           headers: {
@@ -78,11 +80,10 @@ const navigate = useNavigate()
         text: "Added completely",
         duration: 3000, // Duration in milliseconds
         gravity: "top", // 'top' or 'bottom'
-        position: 'right', // 'left', 'center', 'right'
+        position: "right", // 'left', 'center', 'right'
         backgroundColor: "#833988",
       }).showToast();
-      navigate('/teacher')
-
+      navigate("/teacher");
     } catch (error) {
       console.log(`Error fetching post data ${error}`);
     }
@@ -99,15 +100,23 @@ const navigate = useNavigate()
         <div className="row mt-4">
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">اسم الاستاذ</p>
-            <input type="text" className="input_addcourse" onChange={(e)=>setTeacher_name(e.target.value)} />{" "}
+            <input
+              type="text"
+              className="input_addcourse"
+              onChange={(e) => setTeacher_name(e.target.value)}
+            />{" "}
           </div>
           {/* <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">اسم المادة</p>
             <input type="text" className="input_addcourse" onChange={(e)=>setTeacher_name(e.target.value)} />{" "}
           </div> */}
-            <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">الايميل</p>
-            <input type="text" className="input_addcourse" onChange={(e)=>setEmail(e.target.value)} />{" "}
+            <input
+              type="text"
+              className="input_addcourse"
+              onChange={(e) => setEmail(e.target.value)}
+            />{" "}
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">القسم </p>
@@ -126,22 +135,22 @@ const navigate = useNavigate()
               ))}
             </select>
           </div>
-        
         </div>
-      
+
         <div className="row mt-4">
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">الوصف</p>
             <textarea
               type="text"
-              className="input_textarea_addcourse"onChange={(e)=>setDescr(e.target.value)}
+              className="input_textarea_addcourse"
+              onChange={(e) => setDescr(e.target.value)}
             ></textarea>
           </div>
-          
-          <div className="col-lg-8 col-md-6 col-sm-12">
-          <p className="input_title_addcourse">صورة الاستاذ </p>
 
-          <div className="file_input_addvideo">
+          <div className="col-lg-8 col-md-6 col-sm-12">
+            <p className="input_title_addcourse">صورة الاستاذ </p>
+
+            <div className="file_input_addvideo">
               <button className="btn_choose_video">اختيار ملف</button>
               <input
                 type="file"
@@ -162,7 +171,8 @@ const navigate = useNavigate()
               <div className="d-flex justify-content-around">
                 <p className="selected_file_addcourse">{selectedFile.name}</p>
                 <i
-                  className="fa-solid fa-square-xmark fa-lg mt-2"onClick={handleDeleteSelectedFile}
+                  className="fa-solid fa-square-xmark fa-lg mt-2"
+                  onClick={handleDeleteSelectedFile}
                   style={{ color: "#944b43" }}
                 ></i>
               </div>
@@ -170,15 +180,12 @@ const navigate = useNavigate()
             {/*End when add video display name of it */}
           </div>
           <div className="d-flex justify-content-center align-items-center ">
-
-        <button className="btn_addCourse px-5 py-2 "onClick={handlePost}>اضافة</button>
+            <button className="btn_addCourse px-5 py-2 " onClick={handlePost}>
+              اضافة
+            </button>
           </div>
-     
         </div>
-
       </div>
-
-    
     </>
   );
 }

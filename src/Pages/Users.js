@@ -158,7 +158,7 @@ function Users() {
   const dataToDisplay = searchQuery ? searchResults : users;
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/delete/${currentId}`);
+      await axios.delete(`${API_URL}/users/delete/${currentId}`);
 
       // Remove the deleted department from state
       setUsers((prevData) =>

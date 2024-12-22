@@ -9,6 +9,7 @@ import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import Spinner from "react-bootstrap/Spinner";
+import { API_URL } from "../App";
 
 function Blogs() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,7 +52,7 @@ function Blogs() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/blog");
+        const response = await axios.get(`${API_URL}/blog/All-blogs`);
         setBlogs(response.data);
         setLoading(false);
       } catch (error) {
@@ -63,12 +64,12 @@ function Blogs() {
   const handleApproved = async (blogId) => {
     try {
       // Update the blog status in the database using PUT
-      await axios.put(`http://localhost:8080/blog/action/${blogId}`, {
+      await axios.put(`${API_URL}/blog/updateActionBlogs/${blogId}`, {
         action: "approved",
       });
 
       // Fetch the updated list of blogs
-      const response = await axios.get("http://localhost:8080/blog");
+      const response = await axios.get(`${API_URL}/blog/All-blogs`);
       setBlogs(response.data);
     } catch (error) {
       console.error("Error updating blog status:", error);
@@ -76,7 +77,7 @@ function Blogs() {
   };
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/blog/delete/${currentId}`);
+      await axios.delete(`${API_URL}/blog/delete-blog/${currentId}`);
 
       // Remove the deleted department from state
       setBlogs((prevData) => prevData.filter((data) => data.id !== currentId));
@@ -159,7 +160,7 @@ function Blogs() {
                     <tr key={blog.id}>
                       <td>{blog.title} </td>
                       <td> {blog.author}</td>
-                      <td>{blog.department_name}</td>
+                      <td>{blog.Department.title}</td>
                       <td>{blog.descr}</td>
                       {blog.action === "approved" ? (
                       <td>

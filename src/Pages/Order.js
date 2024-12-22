@@ -7,6 +7,7 @@ import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import DeletePopUp from "../component/DeletePopUp";
 import Spinner from "react-bootstrap/Spinner";
+import { API_URL } from "../App";
 
 function Order() {
   const [activeButton, setActiveButton] = useState("btn1");
@@ -47,7 +48,7 @@ const fetchDepartmentOrder = async () => {
   setNoDepartmentessage(''); // Clear previous message
   
   try {
-    const response = await axios.get("http://localhost:8080/api/getcourseusers");
+    const response = await axios.get(`${API_URL}/PaymentsDepartments/getpaymentdata`);
     const data = response.data;
     // Filter to only include unapproved payments
     const unapprovedPayments = data.filter(payment => payment.department_id !== null);
@@ -69,7 +70,7 @@ const fetchDepartmentOrder = async () => {
 
   const fetchCourseOrder = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/getcourseusers");
+      const response = await  axios.get(`${API_URL}/PaymentsDepartments/getpaymentdata`);
       const data = response.data;
       // Filter to only include unapproved payments
       const unapprovedPayments = data.filter(payment => payment.course_id !== null);
@@ -92,9 +93,9 @@ const fetchDepartmentOrder = async () => {
 
   const handleDeleteCourseUsers = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/delete/payments/${currentId}`);
-      setDepartmentOrder((prevData) => prevData.filter((data) => data.payment_id !== currentId));
-      setCourseOrder((prevData) => prevData.filter((data) => data.payment_id !== currentId));
+      await axios.delete(`${API_URL}/PaymentsDepartments/delete/payments/${currentId}`);
+      setDepartmentOrder((prevData) => prevData.filter((data) => data.id !== currentId));
+      setCourseOrder((prevData) => prevData.filter((data) => data.id !== currentId));
       Toastify({
         text: "Order deleted successfully",
         duration: 3000,
@@ -165,14 +166,14 @@ const fetchDepartmentOrder = async () => {
                    <td>{course.email}</td>
                    <td>{course.address}</td>
                    <td>{course.phone}</td>
-                   <td>{course.subject_name}</td>
-                   <td>{course.coupon_code}</td> {/* Display Coupon Code */}
+                   <td>{course.course.subject_name}</td>
+                   <td>{course.Coupon.coupon_code}</td> {/* Display Coupon Code */}
                    <td>
                      
                         <i
                           className="fa-regular fa-trash-can fa-lg"
                           style={{ color: "#944b43" }}
-                          onClick={() => handleOpenModal(course.payment_id)}
+                          onClick={() => handleOpenModal(course.id)}
 
                           // onClick={()=>handleDeleteCourseUsers(course.payment_id)} 
                           ></i>
@@ -212,13 +213,13 @@ const fetchDepartmentOrder = async () => {
         <td>{department.email}</td>
         <td>{department.address}</td>
         <td>{department.phone}</td>
-        <td>{department.department_name}</td>
-        <td>{department.coupon_code}</td> {/* Display Coupon Code */}
+        <td>{department.Department.title}</td>
+        <td>{department.Coupon.coupon_code}</td> {/* Display Coupon Code */}
         <td>
                         <i
                           className="fa-regular fa-trash-can fa-lg"
                           style={{ color: "#944b43" }}
-                          onClick={() => handleOpenModal(department.payment_id)}
+                          onClick={() => handleOpenModal(department.id)}
 
                           // onClick={()=>handleDeleteCourseUsers(department.payment_id)}                          
                            >

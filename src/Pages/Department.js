@@ -6,8 +6,9 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import DeletePopUp from "../component/DeletePopUp";
 import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css"; 
+import "toastify-js/src/toastify.css";
 import axios from "axios";
+import { API_URL } from "../App";
 function Department() {
   const [showPost, setShowPost] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
@@ -17,7 +18,7 @@ function Department() {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [departmentData, setDepartmentData] = useState([]);
-  const [currentId, setCurrentId] = useState(null); 
+  const [currentId, setCurrentId] = useState(null);
   const [del, setDel] = useState([]);
 
   const handleClose = () => {
@@ -35,7 +36,8 @@ function Department() {
   };
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/department/");
+      const response = await axios.get(`${API_URL}/departments/getDepartments`);
+
       const data = response.data;
       setDepartmentData(data);
     } catch (error) {
@@ -45,7 +47,7 @@ function Department() {
 
   useEffect(() => {
     fetchData();
-  });
+  },[]);
   const handlePost = async () => {
     if (!title || !price) {
       Toastify({
@@ -59,8 +61,8 @@ function Department() {
     }
     try {
       const response = await axios.post(
-        "http://localhost:8080/department/add",
-        { title , price }
+        `${API_URL}/departments/createDepartment`,
+        { title, price }
       );
       setDepartmentData(response.data);
       Toastify({
@@ -89,7 +91,7 @@ function Department() {
     }
     try {
       const response = await axios.put(
-        `http://localhost:8080/department/update/${currentId}`, // Use currentId here
+        `${API_URL}/departments/updateDepartment/${currentId}`, // Use currentId here
         { title, price }
       );
       // Update the department data in state
@@ -110,25 +112,28 @@ function Department() {
       console.log(`Error updating data: ${error}`);
     }
   };
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/department/delete/${currentId}?confirm=true`);
+      await axios.delete(
+        `http://localhost:8080/department/delete/${currentId}?confirm=true`
+      );
       setSmShow(false);
       setUserIds([]);
     } catch (error) {
       console.error("Error deleting department:", error);
     }
   };
-  
-  const [userIds, setUserIds] = useState([]);
 
+  const [userIds, setUserIds] = useState([]);
 
   const handleOpenModal = async (id) => {
     setCurrentId(id);
     try {
-      const response = await axios.delete(`http://localhost:8080/department/delete/${id}`);
+      const response = await axios.delete(
+        `http://localhost:8080/department/delete/${id}`
+      );
       const { message, userIds } = response.data;
 
       setMessage(message);
@@ -153,7 +158,7 @@ function Department() {
 
           <Modal.Body>
             <Form>
-            <Form.Group
+              <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
@@ -189,97 +194,101 @@ function Department() {
         </Modal>
         <div className="container-fluid ">
           <div className="row d-flex justify-content-center align-items-center">
-            {Array.isArray(departmentData) &&departmentData.map((card, id) => (
-              <div className="col-lg-3 col-md-6 col-sm-12 col_depa" key={card.id}>
-                <div className=" info_cont_depa">
-                <img
+            {Array.isArray(departmentData) &&
+              departmentData.map((card, id) => (
+                <div
+                  className="col-lg-3 col-md-6 col-sm-12 col_depa"
+                  key={card.id}
+                >
+                  <div className=" info_cont_depa">
+                    <img
                       src={require("../assets/department.png")}
                       alt="department"
                       className="img-fluid icon_department ms-3"
                     />
-                <p className="title_depa ">{card.title}</p>
-                </div>
-                <div className="btn_handle_cont">
-                  <button
-                    className="btn_handle_depa"
-                    onClick={() => handleShowForUpdate(card.id)}
-                  >
-                    <i
-                      className="fa-regular fa-pen-to-square"
-                      style={{ color: "#fff" }}
-                    ></i>
-                  </button>
-                  <button
-                    className="btn_handle_depa"
-                    onClick={() => handleOpenModal(card.id)}
-                  >
-                    <i
-                      className="fa-regular fa-trash-can"
-                      style={{ color: "#fff" }}
-                    ></i>
-                  </button>
-                
-                  <DeletePopUp
-                    show={smShow}
-                    onHide={handleCloseModal}
-                    title={message}
-                    // description={descriptionPopup}
-                    handleDelete={handleDelete}
-                  />
-                </div>
-                <Modal show={showUpdate} onHide={handleClose} dir="rtl">
-                  <Modal.Title className="modal_title">تعديل قسم</Modal.Title>
+                    <p className="title_depa ">{card.title}</p>
+                  </div>
+                  <div className="btn_handle_cont">
+                    <button
+                      className="btn_handle_depa"
+                      onClick={() => handleShowForUpdate(card.id)}
+                    >
+                      <i
+                        className="fa-regular fa-pen-to-square"
+                        style={{ color: "#fff" }}
+                      ></i>
+                    </button>
+                    <button
+                      className="btn_handle_depa"
+                      onClick={() => handleOpenModal(card.id)}
+                    >
+                      <i
+                        className="fa-regular fa-trash-can"
+                        style={{ color: "#fff" }}
+                      ></i>
+                    </button>
 
-                  <Modal.Body>
-                    <Form>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Label className="text_field ">
-                          {" "}
-                          عنوان القسم{" "}
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          className="input_filed_modal"
-                          onChange={(e) => {
-                            setTitle(e.target.value);
-                          }}
-                        />
-                      </Form.Group>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Label className="text_field ">
-                          {" "}
-                          سعر القسم{" "}
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          className="input_filed_modal"
-                          onChange={(e) => {
-                            setPrice(e.target.value);
-                          }}
-                        />
-                      </Form.Group>
-                    </Form>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    {/* <Button variant="secondary" onClick={handleClose}>
+                    <DeletePopUp
+                      show={smShow}
+                      onHide={handleCloseModal}
+                      title={message}
+                      // description={descriptionPopup}
+                      handleDelete={handleDelete}
+                    />
+                  </div>
+                  <Modal show={showUpdate} onHide={handleClose} dir="rtl">
+                    <Modal.Title className="modal_title">تعديل قسم</Modal.Title>
+
+                    <Modal.Body>
+                      <Form>
+                        <Form.Group
+                          className="mb-3"
+                          controlId="exampleForm.ControlInput1"
+                        >
+                          <Form.Label className="text_field ">
+                            {" "}
+                            عنوان القسم{" "}
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="input_filed_modal"
+                            onChange={(e) => {
+                              setTitle(e.target.value);
+                            }}
+                          />
+                        </Form.Group>
+                        <Form.Group
+                          className="mb-3"
+                          controlId="exampleForm.ControlInput1"
+                        >
+                          <Form.Label className="text_field ">
+                            {" "}
+                            سعر القسم{" "}
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="input_filed_modal"
+                            onChange={(e) => {
+                              setPrice(e.target.value);
+                            }}
+                          />
+                        </Form.Group>
+                      </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      {/* <Button variant="secondary" onClick={handleClose}>
             Close
           </Button> */}
-                    <Button
-                      onClick={handleUpdate}
-                      className="buy_department_btn"
-                    >
-                      تعديل{" "}
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-              </div>
-            ))}
+                      <Button
+                        onClick={handleUpdate}
+                        className="buy_department_btn"
+                      >
+                        تعديل{" "}
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </div>
+              ))}
           </div>
         </div>
       </section>

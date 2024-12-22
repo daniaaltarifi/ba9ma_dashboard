@@ -67,7 +67,8 @@ import UpdatePurchaseSteps from "./Pages/UpdatePurchaseSteps.js";
 import TeacherAddBlog from "./Teacher/TeacherAddBlog.js";
 import ResetPassword from "./Pages/ResetPassword.js";
 import ForgetPassword from "./Pages/ForgetPassword.js";
-export const API_URL='http://localhost:6060'
+// export const API_URL='http://localhost:6060'
+export const API_URL='https://backendba9ma.ba9maonline.com'
 
 function AppContent() {
   const location = useLocation();

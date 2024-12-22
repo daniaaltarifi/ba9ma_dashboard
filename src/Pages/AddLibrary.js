@@ -1,33 +1,34 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../component/NavBar";
 import "../Css/addCourse.css";
 import axios from "axios";
 import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css"; 
+import "toastify-js/src/toastify.css";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../App";
 
 function AddLibrary() {
   const navigate = useNavigate();
-  const [book_name, setBook_name] = useState('');
+  const [book_name, setBook_name] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [displayInfo, setDisplayInfo] = useState([]);
-const [author, setAuthor] = useState("")
-const [department_id, setDepartment_id] = useState("")
-const [page_num, setPage_num] = useState("")
-const [departmentData, setDepartmentData] = useState([])
-const [library, setLibrary] = useState([])
+  const [author, setAuthor] = useState("");
+  const [department_id, setDepartment_id] = useState("");
+  const [page_num, setPage_num] = useState("");
+  const [departmentData, setDepartmentData] = useState([]);
+  const [library, setLibrary] = useState([]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
 
-  const handleDeleteSelectedFile=()=>{
+  const handleDeleteSelectedFile = () => {
     setSelectedFile(null);
-  }
-    const handleDeleteCourse = (id) => {
+  };
+  const handleDeleteCourse = (id) => {
     // Delete the selected course by its ID
-    const updatedDisplayInfo = displayInfo.filter(course => course.id !== id);
+    const updatedDisplayInfo = displayInfo.filter((course) => course.id !== id);
     setDisplayInfo(updatedDisplayInfo);
   };
   const handleDepartment = (e) => {
@@ -37,7 +38,9 @@ const [library, setLibrary] = useState([])
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/department");
+        const response = await axios.get(
+          `${API_URL}/departments/getDepartments`
+        );
         setDepartmentData(response.data);
       } catch (error) {
         console.error("Error fetching departments:", error);
@@ -47,37 +50,36 @@ const [library, setLibrary] = useState([])
     fetchDepartments();
   }, []);
   const handlePost = async () => {
-
     if (!book_name || !author || !department_id || !page_num || !selectedFile) {
       Toastify({
         text: "Please Fill All Field",
         duration: 3000, // Duration in milliseconds
         gravity: "top", // 'top' or 'bottom'
-        position: 'right', // 'left', 'center', 'right'
+        position: "right", // 'left', 'center', 'right'
         backgroundColor: "#CA1616",
       }).showToast();
       return;
     }
     try {
       const formData = new FormData();
-      formData.append('book_name', book_name);
-      formData.append('author', author);
-      formData.append('department_id', department_id);
-      formData.append('page_num', page_num);
-      formData.append('file_book', selectedFile);
+      formData.append("book_name", book_name);
+      formData.append("author", author);
+      formData.append("department_id", department_id);
+      formData.append("page_num", page_num);
+      formData.append("file_book", selectedFile);
       const maxSize = 100 * 1024 * 1024; // 100 MB
       if (selectedFile.size > maxSize) {
         Toastify({
           text: "File size exceeds 100 MB",
           duration: 3000,
           gravity: "top",
-          position: 'right',
+          position: "right",
           backgroundColor: "#CA1616",
         }).showToast();
         return;
       }
       const response = await axios.post(
-        "http://localhost:8080/library/add",
+        `${API_URL}/Libraries/createLibrary`,
         formData,
         {
           headers: {
@@ -91,11 +93,10 @@ const [library, setLibrary] = useState([])
         text: "Added completely",
         duration: 3000, // Duration in milliseconds
         gravity: "top", // 'top' or 'bottom'
-        position: 'right', // 'left', 'center', 'right'
+        position: "right", // 'left', 'center', 'right'
         backgroundColor: "#833988",
       }).showToast();
-      navigate('/library')
-
+      navigate("/library");
     } catch (error) {
       console.log(`Error fetching post data ${error}`);
     }
@@ -112,11 +113,21 @@ const [library, setLibrary] = useState([])
         <div className="row mt-4">
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">اسم الكتاب</p>
-            <input type="text"value={book_name} className="input_addcourse" onChange={(e)=>setBook_name(e.target.value)}/>{" "}
+            <input
+              type="text"
+              value={book_name}
+              className="input_addcourse"
+              onChange={(e) => setBook_name(e.target.value)}
+            />{" "}
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">اسم الكاتب</p>
-            <input type="text"value={author} className="input_addcourse" onChange={(e)=>setAuthor(e.target.value)}/>{" "}
+            <input
+              type="text"
+              value={author}
+              className="input_addcourse"
+              onChange={(e) => setAuthor(e.target.value)}
+            />{" "}
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">القسم </p>
@@ -136,16 +147,21 @@ const [library, setLibrary] = useState([])
             </select>
           </div>
         </div>
-      
+
         <div className="row mt-4">
-        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">عدد الصفحات</p>
-            <input type="text" value={page_num} className="input_addcourse" onChange={(e)=>setPage_num(e.target.value)}/>{" "}
+            <input
+              type="text"
+              value={page_num}
+              className="input_addcourse"
+              onChange={(e) => setPage_num(e.target.value)}
+            />{" "}
           </div>
           <div className="col-lg-8 col-md-6 col-sm-12">
-          <p className="input_title_addcourse">رفع الكتاب </p>
+            <p className="input_title_addcourse">رفع الكتاب </p>
 
-          <div className="file_input_addvideo">
+            <div className="file_input_addvideo">
               <button className="btn_choose_video">اختيار ملف</button>
               <input
                 type="file"
@@ -166,7 +182,8 @@ const [library, setLibrary] = useState([])
               <div className="d-flex justify-content-around">
                 <p className="selected_file_addcourse">{selectedFile.name}</p>
                 <i
-                  className="fa-solid fa-square-xmark fa-lg mt-2"onClick={handleDeleteSelectedFile}
+                  className="fa-solid fa-square-xmark fa-lg mt-2"
+                  onClick={handleDeleteSelectedFile}
                   style={{ color: "#944b43" }}
                 ></i>
               </div>
@@ -174,15 +191,15 @@ const [library, setLibrary] = useState([])
             {/*End when add video display name of it */}
           </div>
           <div className="d-flex justify-content-center align-items-center ">
-
-        <button className="btn_addCourse px-5 py-2 mt-5"onClick={handlePost}>اضافة</button>
+            <button
+              className="btn_addCourse px-5 py-2 mt-5"
+              onClick={handlePost}
+            >
+              اضافة
+            </button>
           </div>
-     
         </div>
-
       </div>
-
-    
     </>
   );
 }

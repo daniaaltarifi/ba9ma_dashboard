@@ -9,6 +9,7 @@ import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import Spinner from "react-bootstrap/Spinner";
+import { API_URL } from "../App";
 
 function Teacher() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -53,7 +54,7 @@ function Teacher() {
     const fetchTeachers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/teacher/"
+          `${API_URL}/TeacherRoutes`
         );
         const teachersData = response.data;
         setTeachers(teachersData);
@@ -97,7 +98,7 @@ function Teacher() {
 
       // Fetch course counts for all teacher IDs in parallel
       const courseCountPromises = teacherIds.map((id) =>
-        axios.get(`http://localhost:8080/courses/course-counts/${id}`)
+        axios.get(`${API_URL}/Courses/course-counts/${id}`)
       );
 
       const courseCountsResponses = await Promise.all(courseCountPromises);
@@ -119,7 +120,7 @@ function Teacher() {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:8080/teacher/delete/${currentId}`
+        `${API_URL}/TeacherRoutes/delete/${currentId}`
       );
 
       // Remove the deleted department from state

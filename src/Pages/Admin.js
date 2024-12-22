@@ -159,7 +159,7 @@ function Admin() {
   const dataToDisplay = searchQuery ? searchResults : admin;
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/users/deleteadmin/${currentId}`);
+      await axios.delete(`${API_URL}/users/deleteadmin/${currentId}`);
 
       // Remove the deleted department from state
       setAdmin((prevData) =>

@@ -228,7 +228,7 @@ function Coupon() {
                       </td>
                       <td>{getAdditionalInfo(couponData)}</td>{" "}
                       {/* Display department or course info */}
-                      <td>{couponData.used ? "مستخدم" : "غير مستخدم"}</td>{" "}
+                      <td>{couponData.used === true ? "مستخدم" : "غير مستخدم"}</td>{" "}
                       {/* Display used status */}
                       <td>
                         {new Date(
