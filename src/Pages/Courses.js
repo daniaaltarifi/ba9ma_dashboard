@@ -8,6 +8,7 @@ import DeletePopUp from "../component/DeletePopUp";
 import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import { API_URL } from "../App";
 function Courses() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -31,17 +32,17 @@ function Courses() {
     setSmShow(false);
   };
   const handleUpdate = (id) => {
-    navigate('/updatecourse', { state: { id } });
+    navigate("/updatecourse", { state: { id } });
   };
-  
+
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/courses/");
+        const response = await axios.get(`${API_URL}/Courses`);
         const data = response.data;
         setCourses(data);
         fetchStudentCountsCourses(data);
-        fetchLessonCounts(data); // Ensure this function is defined elsewhere
+        // fetchLessonCounts(data); // Ensure this function is defined elsewhere
       } catch (error) {
         console.log(`Error getting data from frontend: ${error}`);
       }
@@ -55,7 +56,7 @@ function Courses() {
       courses.map(async (course) => {
         try {
           const response = await axios.get(
-            `http://localhost:8080/courses/users-counts/${course.id}`
+            `${API_URL}/Courses/users-counts/${course.id}`
           );
           counts[course.id] = response.data.student_count;
         } catch (error) {
@@ -69,33 +70,32 @@ function Courses() {
     setstudent_courseCount(counts);
   };
 
-  const fetchLessonCounts = async (courses) => {
-    try {
-      const courseIds = courses.map((course) => course.id); // Use course_id for API request
+  // const fetchLessonCounts = async (courses) => {
+  //   try {
+  //     const courseIds = courses.map((course) => course.id); // Use course_id for API request
 
-      // Fetch lesson counts for all course IDs in parallel
-      const courseCountPromises = courseIds.map((id) =>
-        axios.get(`http://localhost:8080/courses/lesson-counts/${id}`)
-      );
-      const courseCountsResponses = await Promise.all(courseCountPromises);
-      const courseCountsData = courseCountsResponses.map(
-        (response) => response.data[0].lesson_count
-      );
+  //     // Fetch lesson counts for all course IDs in parallel
+  //     const courseCountPromises = courseIds.map((id) =>
+  //       axios.get(`${API_URL}/Courses/lesson-counts/${id}`)
+  //     );
+  //     const courseCountsResponses = await Promise.all(courseCountPromises);
+  //     const courseCountsData = courseCountsResponses.map(
+  //       (response) => response.data[0].lesson_count
+  //     );
 
-      // Combine course counts with course data
-      const coursesWithCounts = courses.map((course, index) => ({
-        ...course,
-        lesson_count: courseCountsData[index] || 0,
-      }));
+  //     // Combine course counts with course data
+  //     const coursesWithCounts = courses.map((course, index) => ({
+  //       ...course,
+  //       lesson_count: courseCountsData[index] || 0,
+  //     }));
 
-      // Update state or do something with the augmented data
-      setLessonCounts(coursesWithCounts);
-    } catch (error) {
-      console.error("Error fetching course counts:", error);
-    }
-  };
-  useEffect(() => {
-  }, [lessonCounts]);
+  //     // Update state or do something with the augmented data
+  //     setLessonCounts(coursesWithCounts);
+  //   } catch (error) {
+  //     console.error("Error fetching course counts:", error);
+  //   }
+  // };
+  // useEffect(() => {}, [lessonCounts]);
 
   const dataToDisplay = searchQuery ? searchResults : courses;
   const handleInputChange = (event) => {
@@ -107,39 +107,28 @@ function Courses() {
 
     setSearchResults(filteredResults);
   };
-  // const handleDelete = async () => {
-  //   try {
-  //     await axios.delete(`http://localhost:8080/courses/delete/${currentId}`);
-
-  //     // Remove the deleted department from state
-  //     setCourses((prevData) =>
-  //       prevData.filter((data) => data.id !== currentId)
-  //     );
-
-  //     Toastify({
-  //       text: "course deleted successfully",
-  //       duration: 3000,
-  //       gravity: "top",
-  //       position: "right",
-  //       backgroundColor: "#F57D20",
-  //     }).showToast();
-
-  //     handleCloseModal(); // Close the modal after deletion
-  //   } catch (error) {
-  //     console.error("Error deleting department:", error);
-  //   }
-  // };
  
+
   const handleDelete = async (currentId) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/courses/delete/${currentId}`);
+      const response = await axios.delete(
+        `${API_URL}/Courses/deleteCourse/${currentId}`
+      );
       const { message, hasUsers } = response.data;
-  
+
       if (hasUsers) {
-        if (window.confirm("This course has associated users. Are you sure you want to delete it?")) {
-          await axios.delete(`http://localhost:8080/courses/delete/${currentId}?force=true`);
+        if (
+          window.confirm(
+            "This course has associated users. Are you sure you want to delete it?"
+          )
+        ) {
+          await axios.delete(
+            `${API_URL}/Courses/deleteCourse/${currentId}?force=true`
+          );
           // Optionally, you may handle the deletion in the backend with a query parameter to force deletion.
-          setCourses((prevData) => prevData.filter((data) => data.id !== currentId));
+          setCourses((prevData) =>
+            prevData.filter((data) => data.id !== currentId)
+          );
           Toastify({
             text: "Course deleted successfully",
             duration: 3000,
@@ -150,7 +139,9 @@ function Courses() {
         }
       } else {
         if (window.confirm("Are you sure you want to delete this course?")) {
-          setCourses((prevData) => prevData.filter((data) => data.id !== currentId));
+          setCourses((prevData) =>
+            prevData.filter((data) => data.id !== currentId)
+          );
           Toastify({
             text: "Course deleted successfully",
             duration: 3000,
@@ -165,13 +156,7 @@ function Courses() {
       console.error("Error deleting course:", error);
     }
   };
-  
-  
-  
-  
-  
-  
-  
+
   return (
     <>
       <NavBar title={"المواد"} />
@@ -209,7 +194,6 @@ function Courses() {
                 >
                   بحث{" "}
                 </a>
-           
               </div>
 
               {/* End search */}
@@ -217,7 +201,7 @@ function Courses() {
           </div>
           <div className="row mt-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
-              <Table striped hover >
+              <Table striped hover>
                 <thead>
                   <tr className="table_head_cardprice">
                     <th className="desc_table_cardprice"> المادة</th>
@@ -233,8 +217,8 @@ function Courses() {
                     dataToDisplay.map((course) => (
                       <tr key={course.id}>
                         <td>{course.subject_name}</td>
-                        <td>{course.teacher_name}</td>
-                      
+                        <td>{course.teacher?.teacher_name}</td>
+
                         <td>
                           {student_courseCount[course.id] !== undefined
                             ? student_courseCount[course.id]

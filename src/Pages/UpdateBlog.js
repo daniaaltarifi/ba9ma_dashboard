@@ -60,50 +60,83 @@ function UpdateBlog() {
   useEffect(() => {
     if (!blogId) return;
 
+    // const fetchBlogDetails = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       `${API_URL}/blog/getBlogById/${blogId}`
+    //     );
+    //     const blogData = response.data;
+
+    //     console.log("Fetched blog data:", blogData);
+
+    //     setTitle(blogData.title || "");
+    //     setAuthor(blogData.author || "");
+    //     setDescr(blogData.descr || "");
+    //     setDepartment_id(blogData.department_id || "");
+
+    //     // Process tag IDs and names
+    //     if (blogData.tag_ids && blogData.tag_names) {
+    //       const tagIds = blogData.tag_ids.split(",").map((id) => id.trim());
+    //       const tagNames = blogData.tag_names
+    //         .split(",")
+    //         .map((name) => name.trim());
+
+    //       // Create a mapping of tag IDs to names
+    //       const tagMap = tagIds.reduce((acc, id, index) => {
+    //         acc[id] = tagNames[index] || "";
+    //         return acc;
+    //       }, {});
+
+    //       // Set displayInfo with tag objects
+    //       setDisplayInfo(
+    //         tagIds.map((id) => ({
+    //           id: id, // Use the tag ID from the response
+    //           title: tagMap[id] || "", // Match title with the ID
+    //         }))
+    //       );
+    //     } else {
+    //       setDisplayInfo([]); // No tags, set to empty array
+    //     }
+
+    //     setSelectedFile(blogData.img || "");
+    //   } catch (error) {
+    //     console.error("Error fetching blog details:", error);
+    //   }
+    // };
     const fetchBlogDetails = async () => {
       try {
         const response = await axios.get(
           `${API_URL}/blog/getBlogById/${blogId}`
         );
         const blogData = response.data;
-
+    
         console.log("Fetched blog data:", blogData);
-
+    
+        // Set blog details
         setTitle(blogData.title || "");
         setAuthor(blogData.author || "");
         setDescr(blogData.descr || "");
         setDepartment_id(blogData.department_id || "");
-
-        // Process tag IDs and names
-        if (blogData.tag_ids && blogData.tag_names) {
-          const tagIds = blogData.tag_ids.split(",").map((id) => id.trim());
-          const tagNames = blogData.tag_names
-            .split(",")
-            .map((name) => name.trim());
-
-          // Create a mapping of tag IDs to names
-          const tagMap = tagIds.reduce((acc, id, index) => {
-            acc[id] = tagNames[index] || "";
-            return acc;
-          }, {});
-
-          // Set displayInfo with tag objects
-          setDisplayInfo(
-            tagIds.map((id) => ({
-              id: id, // Use the tag ID from the response
-              title: tagMap[id] || "", // Match title with the ID
-            }))
-          );
+    
+        // Process tags
+        if (blogData.Tags && Array.isArray(blogData.Tags)) {
+          // Map tags to display-friendly format
+          const tagInfo = blogData.Tags.map((tag) => ({
+            id: tag.id,
+            title: tag.tag_name,
+          }));
+    
+          setDisplayInfo(tagInfo);
         } else {
           setDisplayInfo([]); // No tags, set to empty array
         }
-
+    
         setSelectedFile(blogData.img || "");
       } catch (error) {
         console.error("Error fetching blog details:", error);
       }
     };
-
+    
     fetchBlogDetails();
   }, [blogId]);
 

@@ -39,7 +39,7 @@ function Goverment() {
       try {
         const response = await axios.get(`${API_URL}/availablecards`);
         const data = response.data;
-        setGoverment(data);
+        setGoverment(data.governorates);
       } catch (error) {
         console.log(`Error getting data from frontend: ${error}`);
       }
@@ -223,7 +223,7 @@ function Goverment() {
                         <td>{AvailableCards.name} </td>
                         <td> {AvailableCards.location}</td>
                         <td> {AvailableCards.mapslink}</td>
-                        <td>{AvailableCards.governorate.governorate}</td>
+                        <td>{AvailableCards.Governorate.governorate}</td>
                         <td>{AvailableCards.address}</td>
                         <td>{AvailableCards.phone} </td>
 

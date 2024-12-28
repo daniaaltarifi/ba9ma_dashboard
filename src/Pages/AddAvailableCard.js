@@ -5,6 +5,7 @@ import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css"; 
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../App";
 function AddAvailableCards() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -25,7 +26,7 @@ const [AvailableCards, setAvailableCards] = useState([])
   useEffect(() => {
     const fetchGoverment = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/cards/");
+        const response = await axios.get(`${API_URL}/availablecards`);
         setGovermentData(response.data);
       } catch (error) {
         console.error("Error fetching goverment:", error);
@@ -49,7 +50,7 @@ const [AvailableCards, setAvailableCards] = useState([])
     try {
      
       const response = await axios.post(
-        "http://localhost:8080/cards/add/availablecard",
+        `${API_URL}/availablecards/create-available-cards`,
        { name,location,mapslink,governorate_id,address,phone}
       );
 

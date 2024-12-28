@@ -34,7 +34,7 @@ function BoxUnderSlider() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/boxSlider/getBoxSliders`);
+        const response = await axios.get(`${API_URL}/BoxUnderSliders/getBoxSliders`);
         const data = response.data;
         setBoxUnderSlider(data);
       } catch (error) {

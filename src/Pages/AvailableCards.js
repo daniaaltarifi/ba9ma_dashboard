@@ -8,6 +8,7 @@ import DeletePopUp from "../component/DeletePopUp";
 import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css"; 
+import { API_URL } from "../App";
 function AvailableCards() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -35,7 +36,7 @@ function AvailableCards() {
   useEffect(()=>{
     const fetchAvailableCards = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/cards/get/availablecard");
+        const response = await axios.get(`${API_URL}/availablecards/available-cards`);
         setAvailableCards(response.data);
       } catch (error) {
         console.error("Error fetching AvailableCards:", error);
@@ -60,7 +61,7 @@ fetchAvailableCards()
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:8080/cards/delete/availablecards/${currentId}`
+        `${API_URL}/availablecards/available-cards/${currentId}`
       );
 
       // Remove the deleted department from state
@@ -146,7 +147,7 @@ fetchAvailableCards()
                         <td>{AvailableCards.name} </td>
                         <td> {AvailableCards.location}</td>
                         <td> {AvailableCards.mapslink}</td>
-                        <td>{AvailableCards.governorate_name}</td>
+                        <td>{AvailableCards.Governorate?.governorate}</td>
                         <td>{AvailableCards.address}</td>
                         <td>{AvailableCards.phone} </td>
 

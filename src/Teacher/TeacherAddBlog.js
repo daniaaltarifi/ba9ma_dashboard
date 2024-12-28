@@ -1,20 +1,21 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../component/NavBar";
 import "../Css/blog.css";
 import axios from "axios";
 import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css"; 
+import "toastify-js/src/toastify.css";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../App";
 function TeacherAddBlog() {
   const [tags, setTags] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-  const [displayInfo, setDisplayInfo] = useState([  ]);
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [descr, setDescr] = useState("")
-  const [department_id, setDepartment_id] = useState("")
-  const [blogs, setBlogs] = useState([])
-  const [departmentData, setDepartmentData] = useState([])
+  const [displayInfo, setDisplayInfo] = useState([]);
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [descr, setDescr] = useState("");
+  const [department_id, setDepartment_id] = useState("");
+  const [blogs, setBlogs] = useState([]);
+  const [departmentData, setDepartmentData] = useState([]);
   const navigate = useNavigate();
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -28,9 +29,9 @@ function TeacherAddBlog() {
     if (tags) {
       // Generate a unique ID (or use a library for unique IDs)
       const newId = Date.now();
-  
+
       // Add the new tag to the existing list
-      setDisplayInfo(prevInfo => [
+      setDisplayInfo((prevInfo) => [
         ...prevInfo,
         {
           id: newId, // Unique identifier for each tag
@@ -41,12 +42,12 @@ function TeacherAddBlog() {
       setTags("");
     }
   };
-  
+
   const handleDeleteCourse = (id) => {
     const updatedDisplayInfo = displayInfo.filter((entry) => entry.id !== id);
     setDisplayInfo(updatedDisplayInfo);
   };
-  
+
   const handleDepartment = (e) => {
     const selectedDepartmentId = e.target.value;
     setDepartment_id(selectedDepartmentId);
@@ -54,7 +55,9 @@ function TeacherAddBlog() {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/department");
+        const response = await axios.get(
+          `${API_URL}/departments/getDepartments`
+        );
         setDepartmentData(response.data);
       } catch (error) {
         console.error("Error fetching departments:", error);
@@ -64,30 +67,40 @@ function TeacherAddBlog() {
     fetchDepartments();
   }, []);
   const handlePost = async () => {
-    if (!title || !author || !descr || !department_id || !selectedFile || !displayInfo) {
+    if (
+      !title ||
+      !author ||
+      !descr ||
+      !department_id ||
+      !selectedFile ||
+      !displayInfo
+    ) {
       Toastify({
         text: "Please Fill All Field",
         duration: 3000,
         gravity: "top",
-        position: 'right',
+        position: "right",
         backgroundColor: "#CA1616",
       }).showToast();
       return;
     }
-  
+
     try {
       const formData = new FormData();
-      formData.append('title', title);
-      formData.append('author', author);
-      formData.append('descr', descr);
-      formData.append('department_id', department_id);
-      formData.append('img', selectedFile);
-      
-      const tagsArray = Array.isArray(displayInfo) ? displayInfo.map(tag => tag.title) : [];
-      tagsArray.forEach(tag => formData.append('tags[]', tag));
-  
+      formData.append("title", title);
+      formData.append("author", author);
+      formData.append("descr", descr);
+      formData.append("department_id", department_id);
+      formData.append("img", selectedFile);
+
+      const tagsArray = Array.isArray(displayInfo)
+        ? displayInfo.map((tag) => tag.title)
+        : [];
+      tagsArray.forEach((tag) => formData.append("tags[]", tag));
+
       const response = await axios.post(
-        "http://localhost:8080/blog/add",
+        `${API_URL}/blog/create-blog`,
+
         formData,
         {
           headers: {
@@ -95,29 +108,28 @@ function TeacherAddBlog() {
           },
         }
       );
-  
+
       setBlogs(response.data);
       Toastify({
         text: "Added completely",
         duration: 3000,
         gravity: "top",
-        position: 'right',
+        position: "right",
         backgroundColor: "#833988",
       }).showToast();
-      setTitle("")
-      setDescr("")
-      setAuthor("")
-      setDepartment_id("")
-      setTags("")
-      setSelectedFile(null)
+      setTitle("");
+      setDescr("");
+      setAuthor("");
+      setDepartment_id("");
+      setTags("");
+      setSelectedFile(null);
       setDisplayInfo([]); // Clear the tags list
 
-    //   navigate('/blogs');
+      //   navigate('/blogs');
     } catch (error) {
       console.log(`Error fetching post data ${error}`);
     }
   };
-  
 
   return (
     <>
@@ -131,11 +143,21 @@ function TeacherAddBlog() {
         <div className="row mt-4">
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">عنوان المقال</p>
-            <input type="text" className="input_addcourse" value={title} onChange={(e)=>setTitle(e.target.value)}/>{" "}
+            <input
+              type="text"
+              className="input_addcourse"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />{" "}
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">صاحب المقال</p>
-            <input type="text" className="input_addcourse"value={author} onChange={(e)=>setAuthor(e.target.value)} />{" "}
+            <input
+              type="text"
+              className="input_addcourse"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+            />{" "}
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">القسم </p>
@@ -162,8 +184,8 @@ function TeacherAddBlog() {
             <textarea
               type="text"
               className="input_textarea_addcourse"
-              value={descr} 
-              onChange={(e)=>setDescr(e.target.value)}
+              value={descr}
+              onChange={(e) => setDescr(e.target.value)}
             ></textarea>
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
@@ -187,21 +209,20 @@ function TeacherAddBlog() {
 
           <div className="col-lg-4 col-md-6 col-sm-12">
             <div className="entries_container d-flex flex-wrap justify-content-evenly">
-            {displayInfo.map((entry) => (
-  <div key={entry.id} className="entry">
-    <div className="d-flex justify-content-between">
-      <p className="tag_data">
-        {entry.title}
-        <i
-          className="fa-solid fa-square-xmark fa-lg mt-2"
-          onClick={() => handleDeleteCourse(entry.id)} // Ensure this is passing the correct ID
-          style={{ color: "#944b43" }}
-        ></i>
-      </p>
-    </div>
-  </div>
-))}
-
+              {displayInfo.map((entry) => (
+                <div key={entry.id} className="entry">
+                  <div className="d-flex justify-content-between">
+                    <p className="tag_data">
+                      {entry.title}
+                      <i
+                        className="fa-solid fa-square-xmark fa-lg mt-2"
+                        onClick={() => handleDeleteCourse(entry.id)} // Ensure this is passing the correct ID
+                        style={{ color: "#944b43" }}
+                      ></i>
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           <div className="row">
@@ -241,7 +262,12 @@ function TeacherAddBlog() {
           </div>
 
           <div className="d-flex justify-content-center align-items-center ">
-            <button className="btn_addCourse px-5 py-2 mt-4 "onClick={handlePost}>اضافة</button>
+            <button
+              className="btn_addCourse px-5 py-2 mt-4 "
+              onClick={handlePost}
+            >
+              اضافة
+            </button>
           </div>
         </div>
       </div>

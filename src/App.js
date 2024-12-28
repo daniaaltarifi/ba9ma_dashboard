@@ -67,6 +67,7 @@ import UpdatePurchaseSteps from "./Pages/UpdatePurchaseSteps.js";
 import TeacherAddBlog from "./Teacher/TeacherAddBlog.js";
 import ResetPassword from "./Pages/ResetPassword.js";
 import ForgetPassword from "./Pages/ForgetPassword.js";
+import axios from "axios";
 // export const API_URL='http://localhost:6060'
 export const API_URL='https://backendba9ma.ba9maonline.com'
 
@@ -105,6 +106,7 @@ function AppContent() {
 }
 
 const AppRouterAdmin = () => {
+  
     const originalConsoleError = console.error;
   console.error = (...args) => {
     if (/Warning/.test(args[0])) {
@@ -112,6 +114,8 @@ const AppRouterAdmin = () => {
     }
     originalConsoleError.apply(console, args);
   };
+  
+
   return (
     <div className="App" dir="rtl">
       <SideBar />
@@ -202,6 +206,43 @@ const AppRouterTeacher = () => {
 };
 
 const App = () => {
+  const [ip, setIp] = useState(null);
+  const [access, setAccess] = useState(null); 
+ useEffect(() => {
+    fetch("https://api.ipify.org?format=text")
+      .then((response) => response.text())
+      .then((data) => {
+        setIp(data);
+      })
+      .catch((error) => console.error("Error fetching IP address:", error));
+  }, []);
+
+  useEffect(() => {
+    if (ip) {
+      axios
+        .get(`${API_URL}/dashboard`, { params: { ip: ip } })
+        .then((response) => {
+          if (response.data.message === "Access granted to the dashboard") {
+            setAccess(true); 
+          } else {
+            setAccess(false); // Block access if the backend denies
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking VPN or IP:", error);
+          setAccess(false); 
+        });
+    }
+  }, [ip]); 
+
+  if (access === null) {
+    return <div>Loading...</div>; // Loading state while the IP is being checked
+  }
+
+  if (!access) {
+    return <div>Access denied due to VPN/Proxy </div>; // Denied state
+  }   
+
   return (
     <UserProvider>
       <Router>

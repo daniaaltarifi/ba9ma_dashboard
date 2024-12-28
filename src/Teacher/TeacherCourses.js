@@ -8,6 +8,7 @@ import DeletePopUp from "../component/DeletePopUp";
 import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css"; 
+import { API_URL } from "../App";
 function Courses() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -42,7 +43,7 @@ function Courses() {
       }
       
       try {
-        const response = await axios.get(`http://localhost:8080/teacher/teachercourse/${teacherId}`);
+        const response = await axios.get(`${API_URL}/TeacherRoutes/teachercourse/${teacherId}`);
         const data = response.data;
         setCourses(data);
       
@@ -72,7 +73,7 @@ function Courses() {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:8080/teacher/deletecourseteacher/${currentId}`
+        `${API_URL}/TeacherRoutes/deletecourseteacher/${currentId}`
       );
 
       // Remove the deleted department from state

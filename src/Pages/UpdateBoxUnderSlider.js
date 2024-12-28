@@ -20,7 +20,7 @@ function UpdateBoxUnderSlider() {
       setBoxSliderId(location.state.id);
       const fetchContact = async () => {
         try {
-          const response = await axios.get(`${API_URL}/boxSlider/getBoxSlider/${location.state.id}`);
+          const response = await axios.get(`${API_URL}/BoxUnderSliders/getBoxSlider/${location.state.id}`);
           const contact = response.data;
 
           // Check if the response contains expected data
@@ -58,7 +58,7 @@ function UpdateBoxUnderSlider() {
     }
     try {
       const response = await axios.put(
-        `${API_URL}/boxSlider/updateBoxSlider/${boxsliderId}`, // Use boxsliderId here
+        `${API_URL}/BoxUnderSliders/updateBoxSlider/${boxsliderId}`, // Use boxsliderId here
         { title, descr }
       );
 

@@ -9,15 +9,12 @@ import { API_URL } from "../App";
 function UpdateSlider() {
   const [img, setImg] = useState(null);
   const [slider_img, setSlider_img] = useState(null);
-
-  const [displayInfo, setDisplayInfo] = useState([]);
-  const [sliderData, setSliderData] = useState([]);
   const [sliders, setSliders] = useState([]);
   const [title, seTitle] = useState("");
   const [descr, setDescr] = useState("");
   const [page, setPage] = useState("");
   const [slider_id, setSlider_id] = useState("");
-const [btn_name, setBtn_name] = useState("")
+  const [btn_name, setBtn_name] = useState("");
 
   const location = useLocation();
 
@@ -30,30 +27,30 @@ const [btn_name, setBtn_name] = useState("")
   }, [location.state]);
   useEffect(() => {
     // if (location.state && location.state.id) {
-      const fetchslider= async () => {
-        try {
-          const response = await axios.get(`${API_URL}/sliders/getsliderbyid/${slider_id}`);
-          const contact = response.data;
-          // Check if the response contains expected data
-          if (Array.isArray(contact) && contact.length > 0) {
-            const contactDetails = contact[0]; // Adjust based on actual data structure
-            seTitle(contactDetails.title);
-            setDescr(contactDetails.descr);
-            setPage(contactDetails.page);
-            setBtn_name(contactDetails.btn_name);
-            setImg(contactDetails.img);
-            setSlider_img(contactDetails.slider_img);
-          
-          } else {
-            console.warn('No contact data available');
-          }
-        } catch (error) {
-          console.error('Error fetching contact data:', error);
+    const fetchslider = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/sliders/getsliderbyid/${slider_id}`
+        );
+        const contact = response.data;
+        // Check if the response contains expected data
+        if (Array.isArray(contact) && contact.length > 0) {
+          const contactDetails = contact[0]; // Adjust based on actual data structure
+          seTitle(contactDetails.title);
+          setDescr(contactDetails.descr);
+          setPage(contactDetails.page);
+          setBtn_name(contactDetails.btn_name);
+          setImg(contactDetails.img);
+          setSlider_img(contactDetails.slider_img);
+        } else {
+          console.warn("No contact data available");
         }
-      };
+      } catch (error) {
+        console.error("Error fetching contact data:", error);
+      }
+    };
 
-      fetchslider();
- 
+    fetchslider();
   }, [slider_id]);
   const navigate = useNavigate();
   const handleFileChange = (e) => {
@@ -63,45 +60,38 @@ const [btn_name, setBtn_name] = useState("")
   const handleslider_imgChange = (e) => {
     const file = e.target.files[0];
     setSlider_img(file);
+    console.log("first file changed", file);
   };
   const handleDeleteimg = () => {
     setImg(null);
   };
   const handleDeleteImg = async () => {
     try {
-      const response = await axios.delete(`${API_URL}/sliders/deleteimgSlider/${slider_id}`);
+      const response = await axios.delete(
+        `${API_URL}/sliders/deleteimgSlider/${slider_id}`
+      );
 
       if (response.status === 200) {
         setImg(null); // Clear the image state
       } else {
-        throw new Error('Failed to delete image');
+        throw new Error("Failed to delete image");
       }
     } catch (error) {
-      console.error('Failed to delete image:', error.message);
+      console.error("Failed to delete image:", error.message);
     }
   };
   const handleUpdate = async () => {
-    // if (!slider_id) {
-    //   Toastify({
-    //     text: "Please Fill All Fields",
-    //     duration: 3000,
-    //     gravity: "top",
-    //     position: "right",
-    //     backgroundColor: "#CA1616",
-    //   }).showToast();
-    //   return;
-    // }
-  
+console.log("first update",slider_img)
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("descr", descr);
       formData.append("page", page);
-      formData.append('btn_name', btn_name);
+      formData.append("btn_name", btn_name);
 
-    formData.append("img", img);
-  formData.append("slider_img", slider_img);
-  
+      formData.append("img", img);
+      formData.append("slider_img", slider_img);
+
       const response = await axios.put(
         `${API_URL}/sliders/updateSlider/${slider_id}`,
         formData,
@@ -111,12 +101,12 @@ const [btn_name, setBtn_name] = useState("")
           },
         }
       );
-  
+
       // Update the state with the new slider data
       setSliders((prevAdd) =>
         prevAdd.map((data) => (data.id === slider_id ? response.data : data))
       );
-  
+
       Toastify({
         text: "Updated completely",
         duration: 3000,
@@ -124,19 +114,18 @@ const [btn_name, setBtn_name] = useState("")
         position: "right",
         backgroundColor: "#833988",
       }).showToast();
-  
+
       navigate("/slider");
     } catch (error) {
       console.error(`Error in fetch edit data: ${error}`);
     }
   };
-  
+
   useEffect(() => {
-   
-    const inputElement = document.getElementById('page_disabled');
-      if (inputElement) {
-        inputElement.disabled = true;
-      }
+    const inputElement = document.getElementById("page_disabled");
+    if (inputElement) {
+      inputElement.disabled = true;
+    }
   }, []);
   return (
     <>
@@ -169,29 +158,13 @@ const [btn_name, setBtn_name] = useState("")
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">زر التنقل</p>
-            <input type="text" className="input_addcourse"value={btn_name} onChange={(e)=>setBtn_name(e.target.value)} />{" "}
+            <input
+              type="text"
+              className="input_addcourse"
+              value={btn_name}
+              onChange={(e) => setBtn_name(e.target.value)}
+            />{" "}
           </div>
-          {/* <div className="col-lg-4 col-md-6 col-sm-12">
-            <p className="input_title_addcourse">اسم المادة</p>
-            <input type="text" className="input_addcourse" />{" "}
-          </div> */}
-          {/* <div className="col-lg-4 col-md-6 col-sm-12">
-            <p className="input_title_addcourse">القسم </p>
-            <select
-              name="department"
-              value={slider_id}
-              onChange={handleDepartment}
-              id="lang"
-              className="select_dep"
-            >
-              <option value="">اختر قسم</option>
-              {sliderData.map((dep) => (
-                <option key={dep.id} value={dep.id}>
-                  {dep.title}
-                </option>
-              ))}
-            </select>
-          </div> */}
         </div>
 
         <div className="row mt-4">

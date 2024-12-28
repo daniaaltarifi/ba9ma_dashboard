@@ -74,6 +74,7 @@ function Department() {
       }).showToast();
 
       handleClose();
+      fetchData()
     } catch (error) {
       console.log(`Error fetching post data ${error}`);
     }
@@ -117,9 +118,12 @@ function Department() {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:8080/department/delete/${currentId}?confirm=true`
+        `${API_URL}/departments/deleteDepartment/${currentId}?confirm=true`
       );
       setSmShow(false);
+      setDepartmentData((prevData) =>
+        prevData.filter((data) => data.id !== currentId)
+      );
       setUserIds([]);
     } catch (error) {
       console.error("Error deleting department:", error);
@@ -132,7 +136,7 @@ function Department() {
     setCurrentId(id);
     try {
       const response = await axios.delete(
-        `http://localhost:8080/department/delete/${id}`
+        `${API_URL}/departments/deleteDepartment/${id}`
       );
       const { message, userIds } = response.data;
 
