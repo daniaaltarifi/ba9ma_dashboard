@@ -45,7 +45,7 @@ function Whoweare() {
         const response = await axios.get(
           `${API_URL}/aboutTeacher/getaboutteacher`
         );
-        setAboutTeacher(response.data.aboutTeachers);
+        setAboutTeacher(response.data);
       } catch (error) {
         console.error("Error fetching departments:", error);
       }

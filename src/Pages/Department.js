@@ -97,7 +97,7 @@ function Department() {
       );
       // Update the department data in state
       setDepartmentData((prevAdd) =>
-        prevAdd.map((data) => (data.id === currentId ? response.data : data))
+        prevAdd.map((data) => (data.id === currentId ? response.data.department : data))
       );
 
       Toastify({

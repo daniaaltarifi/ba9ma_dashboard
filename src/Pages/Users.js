@@ -21,7 +21,7 @@ function Users() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("student"); // default role
+  const [role, setRole] = useState("Student"); // default role
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -99,7 +99,7 @@ function Users() {
           name,
           email,
           password,
-          role:"student",
+          role:"Student",
           confirmPassword,
         }
       );
@@ -126,7 +126,7 @@ function Users() {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-         `${API_URL}/users/getUserByRole/student`
+         `${API_URL}/users/getUserByRole/Student`
         );
         const usersdata = response.data;
         // const student = usersdata.filter((user) => user.role === "student");
@@ -158,7 +158,7 @@ function Users() {
   const dataToDisplay = searchQuery ? searchResults : users;
   const handleDelete = async () => {
     try {
-      await axios.delete(`${API_URL}/users/delete/${currentId}`);
+      await axios.delete(`${API_URL}/users/deleteStudent/${currentId}`);
 
       // Remove the deleted department from state
       setUsers((prevData) =>

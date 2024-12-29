@@ -5,6 +5,7 @@ import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css"; 
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../App";
 function AddGoverment() {
 const [governorate, setGovernorate] = useState("")
 const[ans, setAns] = useState("")
@@ -22,7 +23,7 @@ const navigate=useNavigate()
     }
     try {
       const response = await axios.post(
-        "http://localhost:8080/cards/add",
+        `${API_URL}/availablecards/add`,
         { governorate }
       );
       // setDepartmentData(response.data);

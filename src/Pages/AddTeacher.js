@@ -113,7 +113,7 @@ function AddTeacher() {
           <div className="col-lg-4 col-md-6 col-sm-12">
             <p className="input_title_addcourse">الايميل</p>
             <input
-              type="text"
+              type="email"
               className="input_addcourse"
               onChange={(e) => setEmail(e.target.value)}
             />{" "}

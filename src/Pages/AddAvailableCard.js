@@ -27,7 +27,7 @@ const [AvailableCards, setAvailableCards] = useState([])
     const fetchGoverment = async () => {
       try {
         const response = await axios.get(`${API_URL}/availablecards`);
-        setGovermentData(response.data);
+        setGovermentData(response.data.governorates);
       } catch (error) {
         console.error("Error fetching goverment:", error);
       }
