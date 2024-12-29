@@ -58,7 +58,6 @@ function AboutTeacher() {
   }, []);
 
   const dataToDisplay = searchQuery ? searchResults : aboutteacher;
-console.log("first search",dataToDisplay)
   return (
     <>
       <NavBar title={"معلمينا"} />

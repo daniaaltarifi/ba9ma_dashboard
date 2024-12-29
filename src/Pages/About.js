@@ -8,6 +8,7 @@ import DeletePopUp from "../component/DeletePopUp";
 import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import { API_URL } from "../App";
 function About() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -48,10 +49,10 @@ function About() {
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/about");
+        const response = await axios.get(`${API_URL}/abouts/getabout`);
         setAbout(response.data);
       } catch (error) {
-        console.error("Error fetching departments:", error);
+        console.error("Error fetching about:", error);
       }
     };
     fetchAbout();

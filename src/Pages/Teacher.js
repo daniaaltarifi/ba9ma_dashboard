@@ -20,7 +20,7 @@ function Teacher() {
   const [teachers, setTeachers] = useState([]);
   const [currentId, setCurrentId] = useState(null);
   const [teacherId, settecherId] = useState(null);
-  const [student_teacherCount, setstudent_teacherCount] = useState({});
+  // const [student_teacherCount, setstudent_teacherCount] = useState({});
   const [teachersWithCourseCounts, setTeachersWithCourseCounts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -60,7 +60,7 @@ function Teacher() {
         setTeachers(teachersData);
 
         // Fetch counts after setting teachers
-        fetchStudentCounts(teachersData);
+        // fetchStudentCounts(teachersData);
         fetchCourseCountsForAllTeachers(teachersData);
         setLoading(false);
       } catch (error) {
@@ -71,25 +71,25 @@ function Teacher() {
   }, []);
 
   // Fetch student counts for each teacher
-  const fetchStudentCounts = async (teachers) => {
-    const counts = {};
-    await Promise.all(
-      teachers.map(async (teacher) => {
-        try {
-          const response = await axios.get(
-            `http://localhost:8080/teacher/student-counts/${teacher.id}`
-          );
-          counts[teacher.id] = response.data.student_count;
-        } catch (error) {
-          console.error(
-            `Error fetching student count for teacher ${teacher.id}:`,
-            error
-          );
-        }
-      })
-    );
-    setstudent_teacherCount(counts);
-  };
+  // const fetchStudentCounts = async (teachers) => {
+  //   const counts = {};
+  //   await Promise.all(
+  //     teachers.map(async (teacher) => {
+  //       try {
+  //         const response = await axios.get(
+  //           `http://localhost:8080/teacher/student-counts/${teacher.id}`
+  //         );
+  //         counts[teacher.id] = response.data.student_count;
+  //       } catch (error) {
+  //         console.error(
+  //           `Error fetching student count for teacher ${teacher.id}:`,
+  //           error
+  //         );
+  //       }
+  //     })
+  //   );
+  //   setstudent_teacherCount(counts);
+  // };
 
   // Fetch course counts for each teacher
   const fetchCourseCountsForAllTeachers = async (teachersData) => {
@@ -193,7 +193,7 @@ function Teacher() {
                     <th className="desc_table_cardprice">الوصف</th>
                     <th className="desc_table_cardprice">الايميل</th>
                     <th className="desc_table_cardprice">عدد المواد </th>
-                    <th className="desc_table_cardprice">عدد الطلاب</th>
+                    {/* <th className="desc_table_cardprice">عدد الطلاب</th> */}
 
                     <th className="desc_table_cardprice">الإجراء</th>
                   </tr>
@@ -215,11 +215,11 @@ function Teacher() {
                             ? teacher.course_count
                             : "0"}
                         </td>
-                        <td>
+                        {/* <td>
                           {student_teacherCount[teacher.id] !== undefined
                             ? student_teacherCount[teacher.id]
                             : "0"}
-                        </td>
+                        </td> */}
 
                         <td>
                           <i

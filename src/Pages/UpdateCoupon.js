@@ -35,15 +35,6 @@ function UpdateCoupon() {
         const response = await axios.get(
           `${API_URL}/Coupons/getCoupons/${couponId}`
         );
-        console.log("first response: ", response.data);
-        //   setCoupon_code(response.data.coupon_code);
-        //   setCoupon_type(response.data.coupon_type);
-        //  // Convert the expiration_date to YYYY-MM-DD if it's not in the correct format
-        //  const formattedDate = new Date(response.data.expiration_date).toISOString().split('T')[0];
-        //  setExpiration_date(formattedDate);
-        //   setCourse_id(response.data.course_id || "");
-        //   setDepartment_id(response.data.department_id || "");
-        console.log("first response: ", response.data);
         const contact = response.data;
 
         if (Array.isArray(contact) && contact.length > 0) {

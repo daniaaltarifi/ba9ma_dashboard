@@ -47,41 +47,6 @@ function DynamicBlog() {
     };
     fetchData();
   }, []);
-  const handleDelete = async () => {
-    try {
-      await axios.delete(
-        `http://localhost:8080/dynamicblog/delete/${currentId}`
-      );
-
-      // Remove the deleted department from state
-      setDynamicBlog((prevData) =>
-        prevData.filter((data) => data.id !== currentId)
-      );
-
-      Toastify({
-        text: "DynamicBlog deleted successfully",
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        backgroundColor: "#F57D20",
-      }).showToast();
-
-      handleCloseModal();
-    } catch (error) {
-      console.error("Error deleting DynamicBlog:", error);
-    }
-  };
-  const handleInputChange = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-
-    // Filter blogs based on search query
-    const filteredResults = DynamicBlog.filter((dyn) =>
-      dyn.title.toLowerCase().includes(query.toLowerCase())
-    );
-
-    setSearchResults(filteredResults);
-  };
   const dataToDisplay = searchQuery ? searchResults : dynamicBlog;
   return (
     <>
@@ -89,14 +54,6 @@ function DynamicBlog() {
       <section classNameName="margin_section">
         <div className="container ">
           <div className="row">
-            {/* <div className="col-lg-6 col-md-12 col-sm-12 ">
-              <Link to="/addDynamicBlog">
-                <Button className="add_btn">
-                  <span className="plus_icon">+</span>
-                  اضف عنوان{" "}
-                </Button>
-              </Link>
-            </div> */}
 
             {/* search */}
             <div className="col-lg-6 col-md-12 col-sm-12 ">

@@ -40,7 +40,6 @@ function UpdatePurchaseSteps() {
         try {
           const response = await axios.get(`${API_URL}/purchasesteps/PurchaseStepsbyid/${location.state.id}`);
           const contact = response.data;
-console.log("first contact: " , contact)
           // Check if the response contains expected data
           if (Array.isArray(contact) && contact.length > 0) {
             const contactDetails = contact[0]; // Adjust based on actual data structure

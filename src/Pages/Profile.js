@@ -5,6 +5,7 @@ import defaultImage from '../assets/profile.png';
 import NavBar from '../component/NavBar';
 import { UserContext } from '../UserContext';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../App';
 function Profile() {
   const [successMessage, setSuccessMessage] = useState('');
   const {user,updateUser}=useContext(UserContext)
@@ -23,7 +24,7 @@ const navigate = useNavigate()
   const fileInputRef = useRef(null);
   useEffect(() => {
     if (user.userId) {
-      axios.get(`http://localhost:8080/api/profile/${user.userId}`)
+      axios.get(`${API_URL}/profile/getProfileUsers/${user.userId}`)
         .then(response => {
           setProfile({
             name: response.data.name,
@@ -33,13 +34,14 @@ const navigate = useNavigate()
             confirmPassword: ''
           });
           // Set the image URL from the profile data
-          setImageUrl(`http://localhost:8080/${response.data.img}`);
+          setImageUrl(`https://res.cloudinary.com/durjqlivi/${response.data.img}`);
         })
         .catch(error => {
           console.error('There was an error fetching the profile!', error);
         });
     }
   }, [user.userId]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProfile(prevState => ({
@@ -48,59 +50,39 @@ const navigate = useNavigate()
     }));
   };
 
-//   useEffect(() => {
-//     if (userId) {
-//       axios.get(`http://localhost:8080/api/profile/${userId}`)
-//         .then(response => {
-//           setProfile({
-//             name: response.data.name,
-//             email: response.data.email,
-//             img: response.data.img,
-//             password: '',
-//             confirmPassword: ''
-//           });
-//           // Set the image URL from the profile data
-//           setImageUrl(`http://localhost:8080/${response.data.img}`);
-//         })
-//         .catch(error => {
-//           console.error('There was an error fetching the profile!', error);
-//         });
-//     }
-//   }, [userId]);
-const handleUpdate = async (e) => {
-  e.preventDefault();
-  const formData = new FormData();
-  formData.append('name', profile.name);
-  formData.append('email', profile.email);
-  formData.append('password', profile.password);
-  formData.append('confirmPassword', profile.confirmPassword);
-  // formData.append('img', profile.img);
-  
-  if (profile.img instanceof File) {
-    formData.append('img', profile.img);
-  }
 
-  try {
-    const response = await axios.put(`http://localhost:8080/api/profile/${user.userId}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    // Update the image URL with the new image URL from the server
-      setImageUrl(`http://localhost:8080/${response.data.img}`);
-setSuccessMessage('تم تعديل حسابك');
-    updateUser(profile.name,userId,response.data.img)
-setProfile(prevState => ({
-...prevState,
-name: response.data.name,
-img: response.data.img,
-}));
-window.location.reload();
-// navigate(`/profile/${user.userId}`)
-} catch (error) {
-console.error('Error updating profile:', error);
-}
-};
+  const handleUpdate = async () => {
+    const formData = new FormData();
+    formData.append('name', profile.name);
+    formData.append('email', profile.email);
+    formData.append('password', profile.password);
+    formData.append('confirmPassword', profile.confirmPassword);
+    // formData.append('img', profile.img);
+    
+    if (profile.img instanceof File) {
+      formData.append('img', profile.img);
+    }
+  
+    try {
+      const response = await axios.put(`${API_URL}/profile/updateProfile/${user.userId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      // Update the image URL with the new image URL from the server
+        setImageUrl(`https://res.cloudinary.com/durjqlivi/${response.data.img}`);
+  setSuccessMessage('تم تعديل حسابك');
+      updateUser(profile.name,userId,response.data.img)
+  setProfile(prevState => ({
+  ...prevState,
+  name: response.data.name,
+  img: response.data.img,
+  }));
+  window.location.reload();
+  } catch (error) {
+  console.error('Error updating profile:', error);
+  }
+  };
 
 
 const handleFileChange = (event) => {

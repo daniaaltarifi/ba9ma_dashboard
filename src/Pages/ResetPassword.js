@@ -2,6 +2,7 @@ import "../Css/auth.css";
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { API_URL } from "../App";
 
 
 function ResetPassword() {
@@ -18,13 +19,11 @@ function ResetPassword() {
       return;
     }
     try {
-      const res = await axios.post(`http://localhost:8080/api/reset-password/${token}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password, confirmPassword })
-      });
-
-      
+            const res = await axios.post(
+              `${API_URL}/users/reset-password/${token}`,
+              { password, confirmPassword },
+              { headers: { 'Content-Type': 'application/json' } }
+            );
       setMessage(res.data.message);
       setError('');
     } catch (err) {

@@ -60,7 +60,6 @@ function UpdateSlider() {
   const handleslider_imgChange = (e) => {
     const file = e.target.files[0];
     setSlider_img(file);
-    console.log("first file changed", file);
   };
   const handleDeleteimg = () => {
     setImg(null);
@@ -81,7 +80,6 @@ function UpdateSlider() {
     }
   };
   const handleUpdate = async () => {
-console.log("first update",slider_img)
     try {
       const formData = new FormData();
       formData.append("title", title);

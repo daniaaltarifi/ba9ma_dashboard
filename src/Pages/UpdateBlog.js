@@ -60,58 +60,13 @@ function UpdateBlog() {
   useEffect(() => {
     if (!blogId) return;
 
-    // const fetchBlogDetails = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       `${API_URL}/blog/getBlogById/${blogId}`
-    //     );
-    //     const blogData = response.data;
-
-    //     console.log("Fetched blog data:", blogData);
-
-    //     setTitle(blogData.title || "");
-    //     setAuthor(blogData.author || "");
-    //     setDescr(blogData.descr || "");
-    //     setDepartment_id(blogData.department_id || "");
-
-    //     // Process tag IDs and names
-    //     if (blogData.tag_ids && blogData.tag_names) {
-    //       const tagIds = blogData.tag_ids.split(",").map((id) => id.trim());
-    //       const tagNames = blogData.tag_names
-    //         .split(",")
-    //         .map((name) => name.trim());
-
-    //       // Create a mapping of tag IDs to names
-    //       const tagMap = tagIds.reduce((acc, id, index) => {
-    //         acc[id] = tagNames[index] || "";
-    //         return acc;
-    //       }, {});
-
-    //       // Set displayInfo with tag objects
-    //       setDisplayInfo(
-    //         tagIds.map((id) => ({
-    //           id: id, // Use the tag ID from the response
-    //           title: tagMap[id] || "", // Match title with the ID
-    //         }))
-    //       );
-    //     } else {
-    //       setDisplayInfo([]); // No tags, set to empty array
-    //     }
-
-    //     setSelectedFile(blogData.img || "");
-    //   } catch (error) {
-    //     console.error("Error fetching blog details:", error);
-    //   }
-    // };
+   
     const fetchBlogDetails = async () => {
       try {
         const response = await axios.get(
           `${API_URL}/blog/getBlogById/${blogId}`
         );
-        const blogData = response.data;
-    
-        console.log("Fetched blog data:", blogData);
-    
+        const blogData = response.data;    
         // Set blog details
         setTitle(blogData.title || "");
         setAuthor(blogData.author || "");
@@ -207,7 +162,6 @@ function UpdateBlog() {
   };
 
   const handleDeleteTag = async (tagId) => {
-    console.log("Attempting to delete tag with ID:", tagId);
     try {
       // Ensure the tagId is valid before making the request
       if (!tagId || isNaN(tagId)) {
@@ -217,11 +171,6 @@ function UpdateBlog() {
       // Send a DELETE request to the backend to remove the tag
       const response = await axios.delete(
         `${API_URL}/Tags/deleteTag/${tagId}`
-      );
-
-      console.log(
-        `Response from server after deleting tag ${tagId}:`,
-        response
       );
 
       // Remove the tag from the local state
