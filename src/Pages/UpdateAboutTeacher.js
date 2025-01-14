@@ -28,20 +28,20 @@ function UpdateAboutTeacher() {
       setAboutteacherId(location.state.id);
       const fetchContact = async () => {
         try {
-          const response = await axios.get(`${API_URL}/aboutTeacher/getaboutteacher/${location.state.id}`);
-          const contact = response.data.aboutTeacher;
+          const response = await axios.get(`${API_URL}/aboutTeacher/getAboutTeacherById/${location.state.id}`);
+          const contact = response.data;
 
           // Check if the response contains expected data
-          if (Array.isArray(contact) && contact.length > 0) {
-            const contactDetails = contact[0]; // Adjust based on actual data structure
+          // if (Array.isArray(contact) && contact.length > 0) {
+            const contactDetails = contact; // Adjust based on actual data structure
             setTitle(contactDetails.title);
             setDescr(contactDetails.descr);
             setPara(contactDetails.para);
             setImg(contactDetails.img);
           
-          } else {
-            console.warn('No contact data available');
-          }
+          // } else {
+          //   console.warn('No contact data available');
+          // }
         } catch (error) {
           console.error('Error fetching contact data:', error);
         }
